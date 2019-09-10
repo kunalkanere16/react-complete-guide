@@ -3,6 +3,27 @@ import './App.css';
 import Person from './Person/Person';
 
 class App extends Component {
+
+  state = {
+    persons : [
+      {name : 'Karen', age : 18},
+      {name : 'Kunal', age : 25},
+      {name : 'Mayur', age : 32}
+    ],
+    profession: 'something'
+  }
+
+  switchNameHandler = () => {
+    //console.log('was clicked!!');
+    //DON'T DO THIS: this.state.persons[0].name = 'Kanere';
+    this.setState({
+      persons : [
+        {name : 'Karen Mansukhani', age : 18},
+        {name : 'Kunal', age : 31},
+        {name : 'Mayur', age : 32}
+      ]
+    });
+  }
   render() {
     return (
       //cannot use class as it is reserved word in JS
@@ -10,9 +31,10 @@ class App extends Component {
       <div className="App"> 
         <h1>Hello React World</h1>
         <p>This is my first react page!!</p>
-        <Person name="Kunal" age="31" />
-        <Person name="Karen" age="25"/>
-        <Person name="Mayur" age="35" >I am the eldest!!</Person>
+        <button onClick={this.switchNameHandler}>Switch Name</button>
+        <Person name={this.state.persons[0].name} age={this.state.persons[0].age} />
+        <Person name={this.state.persons[1].name} age={this.state.persons[1].age}/>
+        <Person name={this.state.persons[2].name} age={this.state.persons[2].age} >I am the eldest!!</Person>
       </div>
     );
     // React compiles to below code internally
