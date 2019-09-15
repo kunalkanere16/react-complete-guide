@@ -21,7 +21,8 @@ class App extends Component {
         {name : newName, age : 18},
         {name : 'Kunal', age : 31},
         {name : 'Mayur', age : 32}
-      ]
+      ],
+      showPersons: false
     });
   }
 
@@ -33,6 +34,11 @@ class App extends Component {
         {name : 'Mayur', age : 32}
       ]
     });
+  }
+
+  togglePersons = () =>{
+    const doesShow = this.state.showPersons;
+    this.setState({showPersons : !doesShow});
   }
 
   render() {
@@ -52,18 +58,24 @@ class App extends Component {
         {/*try not to use below style to call method with args */}
         <button 
           style={style}
-          onClick={ () => this.switchNameHandler('Karen KK')}>Switch Name</button>
-        <Person 
-          name={this.state.persons[0].name} 
-          age={this.state.persons[0].age} />
-        <Person 
-          name={this.state.persons[1].name} 
-          age={this.state.persons[1].age}
-          click={this.switchNameHandler.bind(this, 'Mrs Karen Kanere')}
-          changed={this.nameChangedHandler} />
-        <Person 
-          name={this.state.persons[2].name} 
-          age={this.state.persons[2].age} >I am the eldest!!</Person>
+          onClick={ this.togglePersons}>Toggle persons</button>
+        {
+          this.state.showPersons === true ? 
+          <div>
+            <Person 
+              name={this.state.persons[0].name} 
+              age={this.state.persons[0].age} />
+            <Person 
+              name={this.state.persons[1].name} 
+              age={this.state.persons[1].age}
+              click={this.switchNameHandler.bind(this, 'Mrs Karen Kanere')}
+              changed={this.nameChangedHandler} />
+            <Person 
+              name={this.state.persons[2].name} 
+              age={this.state.persons[2].age} >I am the eldest!!</Person>
+          </div> : null
+        }
+        
       </div>
     );
     // React compiles to below code internally
