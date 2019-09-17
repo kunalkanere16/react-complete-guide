@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Radium, { StyleRoot } from 'radium';
 import './App.css';
 import Person from './Person/Person';
 import ValidationComponent from './UserInput/ValidationComponent';
@@ -80,7 +81,11 @@ class App extends Component {
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      ':hover':{
+        backgroundColor: 'lightgreen',
+        color:'black'
+      }
     };
 
     let persons = null;
@@ -100,6 +105,10 @@ class App extends Component {
       );
 
       style.backgroundColor= 'red';
+      style[':hover'] = {
+        backgroundColor: 'salmon',
+        color:'black'
+      }
     }
 
     let message = null;
@@ -138,28 +147,29 @@ class App extends Component {
     return (
       //cannot use class as it is reserved word in JS
       // all below tags are JSX which are compiled into HTML
-      <div className="App"> 
-        <h1>Hello React World</h1>
-        <p className={classes.join(' ')}>This is my first react page!!</p>
-        {/*try not to use below style to call method with args */}
-        <button 
-          style={style}
-          onClick={ this.togglePersons}>Toggle persons</button>
-        {persons}
-        
-        <div>
-          <input type='text' onChange={this.updateUserInput} value={this.state.userInput.value}/> 
-          <p>{this.state.userInput.value}</p>
-          <p>Length: {this.state.userInput.length}</p>
-          {message}
-          {characters}
+      <StyleRoot>
+        <div className="App"> 
+          <h1>Hello React World</h1>
+          <p className={classes.join(' ')}>This is my first react page!!</p>
+          {/*try not to use below style to call method with args */}
+          <button 
+            style={style}
+            onClick={ this.togglePersons}>Toggle persons</button>
+          {persons}
+          
+          <div>
+            <input type='text' onChange={this.updateUserInput} value={this.state.userInput.value}/> 
+            <p>{this.state.userInput.value}</p>
+            <p>Length: {this.state.userInput.length}</p>
+            {message}
+            {characters}
+          </div>
         </div>
-        
-      </div>
+      </StyleRoot>
     );
     // React compiles to below code internally
     //return React.createElement('div', {className: 'App'}, React.createElement('h1',null,'Some text here'));
   }
 }
 
-export default App;
+export default Radium(App);
