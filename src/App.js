@@ -1,44 +1,76 @@
 import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
+import ValidationComponent from './UserInput/ValidationComponent';
+import CharComponent from './UserInput/CharComponent';
 
 class App extends Component {
 
   state = {
     persons : [
-      {name : 'Karen', age : 18},
-      {name : 'Kunal', age : 25},
-      {name : 'Mayur', age : 32}
+      {id:'sas6a', name : 'Karen', age : 18},
+      {id:'3dwf3', name : 'Kunal', age : 25},
+      {id:'3dr5f', name : 'Mayur', age : 32}
     ],
-    profession: 'something'
+    profession: 'something',
+    showPersons: false,
+    userInput : {
+      value:'',
+      length:0
+    }
   }
 
-  switchNameHandler = (newName) => {
-    //console.log('was clicked!!');
-    //DON'T DO THIS: this.state.persons[0].name = 'Kanere';
-    this.setState({
-      persons : [
-        {name : newName, age : 18},
-        {name : 'Kunal', age : 31},
-        {name : 'Mayur', age : 32}
-      ],
-      showPersons: false
+  nameChangedHandler = (event, id) => {
+    const personIdex = this.state.persons.findIndex(p => {
+      return p.id===id;
     });
+    const person = {
+      ...this.state.persons[personIdex]
+    };
+    //Alternate to spread
+    //const person = Object.assign({}, this.state.persons[personIdex]);
+    person.name = event.target.value;
+    const persons = [...this.state.persons];
+    persons[personIdex] = person;
+    this.setState( {persons:persons} )
   }
+  
 
-  nameChangedHandler = (event) => {
-    this.setState({
-      persons : [
-        {name : 'Karen', age : 18},
-        {name : event.target.value, age : 31},
-        {name : 'Mayur', age : 32}
-      ]
-    });
+  deletePersonHandler = (personIndex) => {
+    //below way we copy reference to original persons
+    //and mutate the state - not a good way
+    //const persons = this.state.persons;
+
+    //update state immutably
+    //const persons = this.state.persons.slice();// copy into new persons
+    //modern way to copy array using spread operator
+    const persons = [...this.state.persons];
+    persons.splice(personIndex, 1);
+    this.setState({persons:persons});
   }
 
   togglePersons = () =>{
     const doesShow = this.state.showPersons;
     this.setState({showPersons : !doesShow});
+  }
+
+  updateUserInput = (event) => {
+    const input = event.target.value;
+    //console.log('update called.....'+input);
+    const userInput = {...this.state.userInput};
+    userInput.value = input;
+    userInput.length = input.length;
+    this.setState({userInput:userInput});
+    //console.log(this.state);
+  }
+
+  deleteCharacterHandler = (charIndex)=>{
+    const userInput = {...this.state.userInput};
+    const charArray = userInput.value.split('');
+    charArray.splice(charIndex,1);
+    userInput.value = charArray.join('');
+    userInput.length = userInput.value.length;
+    this.setState({userInput:userInput})
   }
 
   render() {
@@ -55,20 +87,44 @@ class App extends Component {
     if(this.state.showPersons){
       persons = (
         <div>
-          <Person 
-            name={this.state.persons[0].name} 
-            age={this.state.persons[0].age} />
-          <Person 
-            name={this.state.persons[1].name} 
-            age={this.state.persons[1].age}
-            click={this.switchNameHandler.bind(this, 'Mrs Karen Kanere')}
-            changed={this.nameChangedHandler} />
-          <Person 
-            name={this.state.persons[2].name} 
-            age={this.state.persons[2].age} >I am the eldest!!</Person>
+          {this.state.persons.map((person, index) => {
+            return <Person 
+              click={()=>this.deletePersonHandler(index)}
+              name={person.name}
+              age={person.age} 
+              key={person.id} 
+              changed={(event)=> this.nameChangedHandler(event, person.id)}/>
+          })}
         </div>
       );
     }
+
+    let message = null;
+    if(this.state.userInput.length>=5){
+      message = (
+        <ValidationComponent message='Text long enough'/>
+      );
+    }else{
+      message = (
+        <ValidationComponent message='Text too short'/>
+      );
+    }
+
+    let characters = null;
+
+    if(this.state.userInput.length>0){
+      characters = (
+        <div>
+          {this.state.userInput.value.split('').map((letter, index) => {
+            return <CharComponent  
+              click={()=>this.deleteCharacterHandler(index)}
+              letter={letter}
+              key={index}/>
+          })}
+        </div>
+      );
+    }
+
     return (
       //cannot use class as it is reserved word in JS
       // all below tags are JSX which are compiled into HTML
@@ -80,6 +136,15 @@ class App extends Component {
           style={style}
           onClick={ this.togglePersons}>Toggle persons</button>
         {persons}
+        
+        <div>
+          <input type='text' onChange={this.updateUserInput} value={this.state.userInput.value}/> 
+          <p>{this.state.userInput.value}</p>
+          <p>Length: {this.state.userInput.length}</p>
+          {message}
+          {characters}
+        </div>
+        
       </div>
     );
     // React compiles to below code internally
