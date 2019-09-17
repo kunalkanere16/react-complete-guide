@@ -75,7 +75,8 @@ class App extends Component {
 
   render() {
     const style =  {
-      backgroundColor: 'white',
+      backgroundColor: 'green',
+      color: 'white',
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px',
@@ -97,6 +98,8 @@ class App extends Component {
           })}
         </div>
       );
+
+      style.backgroundColor= 'red';
     }
 
     let message = null;
@@ -125,12 +128,19 @@ class App extends Component {
       );
     }
 
+    const classes = [];
+    if(this.state.persons.length<=2){
+      classes.push('red');
+    }
+    if(this.state.persons.length<=1){
+      classes.push('bold');
+    }
     return (
       //cannot use class as it is reserved word in JS
       // all below tags are JSX which are compiled into HTML
       <div className="App"> 
         <h1>Hello React World</h1>
-        <p>This is my first react page!!</p>
+        <p className={classes.join(' ')}>This is my first react page!!</p>
         {/*try not to use below style to call method with args */}
         <button 
           style={style}
