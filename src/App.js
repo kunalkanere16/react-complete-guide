@@ -74,17 +74,8 @@ class App extends Component {
   }
 
   render() {
-    const style =  {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-    };
-
     let persons = null;
-
+    let btnClass = '';
     if(this.state.showPersons){
       persons = (
         <div>
@@ -98,9 +89,7 @@ class App extends Component {
           })}
         </div>
       );
-
-      style.backgroundColor= 'red';
-      
+      btnClass = classes.Red;
     }
 
     let message = null;
@@ -143,8 +132,7 @@ class App extends Component {
           <h1>Hello React World</h1>
           <p className={classesAssigned.join(' ')}>This is my first react page!!</p>
           {/*try not to use below style to call method with args */}
-          <button 
-            style={style}
+          <button className={btnClass}
             onClick={ this.togglePersons}>Toggle persons</button>
           {persons}
           
