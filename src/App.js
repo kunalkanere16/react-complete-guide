@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Radium, { StyleRoot } from 'radium';
-import './App.css';
+import classes from './App.css';
 import Person from './Person/Person';
 import ValidationComponent from './UserInput/ValidationComponent';
 import CharComponent from './UserInput/CharComponent';
@@ -81,11 +80,7 @@ class App extends Component {
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px',
-      cursor: 'pointer',
-      ':hover':{
-        backgroundColor: 'lightgreen',
-        color:'black'
-      }
+      cursor: 'pointer'
     };
 
     let persons = null;
@@ -105,10 +100,7 @@ class App extends Component {
       );
 
       style.backgroundColor= 'red';
-      style[':hover'] = {
-        backgroundColor: 'salmon',
-        color:'black'
-      }
+      
     }
 
     let message = null;
@@ -137,20 +129,19 @@ class App extends Component {
       );
     }
 
-    const classes = [];
+    const classesAssigned = [];
     if(this.state.persons.length<=2){
-      classes.push('red');
+      classesAssigned.push(classes.red);
     }
     if(this.state.persons.length<=1){
-      classes.push('bold');
+      classesAssigned.push(classes.bold);
     }
     return (
       //cannot use class as it is reserved word in JS
       // all below tags are JSX which are compiled into HTML
-      <StyleRoot>
-        <div className="App"> 
+        <div className={classes.App}> 
           <h1>Hello React World</h1>
-          <p className={classes.join(' ')}>This is my first react page!!</p>
+          <p className={classesAssigned.join(' ')}>This is my first react page!!</p>
           {/*try not to use below style to call method with args */}
           <button 
             style={style}
@@ -165,11 +156,10 @@ class App extends Component {
             {characters}
           </div>
         </div>
-      </StyleRoot>
     );
     // React compiles to below code internally
     //return React.createElement('div', {className: 'App'}, React.createElement('h1',null,'Some text here'));
   }
 }
 
-export default Radium(App);
+export default App;
