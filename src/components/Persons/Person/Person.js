@@ -11,18 +11,22 @@ class Person extends Component {
 
         this.myInputElementRef = React.createRef();
     }
+
+    //React 16.6 feature, class based components only
+    static contextType = AuthContext;
+
     componentDidMount(){
         //this.myInputElement.focus();
         this.myInputElementRef.current.focus();
+        console.log(this.context.authenticated);
     }
 
     render(){
         console.log('[Person.js] rendering...');
         return (
             <Auxiliary>
-                <AuthContext.Consumer>
-                    {(context) => context.authenticated ? <p>Authenticated</p> : <p>Please login</p>}
-                </AuthContext.Consumer>
+                {this.context.authenticated ? <p>Authenticated</p> : <p>Please login</p>}
+                
              {/* <div className={classes.Person} > */}
                 <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} year old!</p>
                 <p>{this.props.children}</p>

@@ -1,10 +1,13 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useContext} from 'react';
 import classes from './Cockpit.css';
 import AuthContext from '../../context/auth-context';
 const cockpit = ( props ) => {
 
   const toggleBtnRef = useRef(null);
-  
+  const authContext = useContext(AuthContext);
+
+  console.log('[Cockpit.js] authenticated:'+authContext.authenticated);
+
   //pass function to useEffect
   useEffect(() => {
     toggleBtnRef.current.click();
@@ -48,9 +51,7 @@ const cockpit = ( props ) => {
           {/*try not to use below style to call method with args */}
           <button ref={toggleBtnRef} className={btnClass}
           onClick={ props.clicked}>Toggle persons</button>
-          <AuthContext.Consumer>
-            {(context)=> <button onClick={context.login}>Log In</button>}
-          </AuthContext.Consumer>
+          <button onClick={authContext.login}>Log In</button>
       </div>
   );
 };
