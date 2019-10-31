@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Auxiliary from '../../../hoc/Auxiliary';
 import withClass from '../../../hoc/withClass';
-import classes from './Person.css'
+import classes from './Person.css';
+import AuthContext from '../../../context/auth-context';
 
 class Person extends Component {
     constructor(props){
@@ -19,6 +20,9 @@ class Person extends Component {
         console.log('[Person.js] rendering...');
         return (
             <Auxiliary>
+                <AuthContext.Consumer>
+                    {(context) => context.authenticated ? <p>Authenticated</p> : <p>Please login</p>}
+                </AuthContext.Consumer>
              {/* <div className={classes.Person} > */}
                 <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} year old!</p>
                 <p>{this.props.children}</p>
