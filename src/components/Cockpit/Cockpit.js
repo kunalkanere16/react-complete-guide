@@ -1,17 +1,21 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import classes from './Cockpit.css';
 
 const cockpit = ( props ) => {
+
+  const toggleBtnRef = useRef(null);
+  
   //pass function to useEffect
   useEffect(() => {
+    toggleBtnRef.current.click();
     console.log('[Cockpit.js] useEffect');
     // this is componentDidMount and componentDidUpdate in one effect
     //eg: Http request
-    const timer = setTimeout(() =>{
-      alert('Saved data to cloud!');
-    }, 1000);
+    // const timer = setTimeout(() =>{
+    //   alert('Saved data to cloud!');
+    // }, 1000);
     return () => {
-      clearTimeout(timer);
+      //clearTimeout(timer);
       //this runs when component is destroyed as empty array is passed to useEffect
       console.log('[Cockpit.js] cleanup work in useEffect')
     };
@@ -42,7 +46,7 @@ const cockpit = ( props ) => {
           <h1>{props.title}</h1>
           <p className={classesAssigned.join(' ')}>This is my first react page!!</p>
           {/*try not to use below style to call method with args */}
-          <button className={btnClass}
+          <button ref={toggleBtnRef} className={btnClass}
           onClick={ props.clicked}>Toggle persons</button>
       </div>
   );
