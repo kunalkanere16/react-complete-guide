@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit'
-import WithClass from '../hoc/WithClass';
+import Auxiliary from '../hoc/Auxiliary';
+import withClass from '../hoc/withClass';
 
 class App extends Component {
   constructor(props){
@@ -95,7 +96,7 @@ class App extends Component {
     return (
       //cannot use class as it is reserved word in JS
       // all below tags are JSX which are compiled into HTML
-        <WithClass classes={classes.App}>
+        <Auxiliary>
           <button onClick={()=>{this.setState({showCockpit:false})}}>
             Remove Cockpit
           </button>
@@ -107,11 +108,11 @@ class App extends Component {
             clicked={this.togglePersons}/>
             :null}
           {persons}
-        </WithClass>
+        </Auxiliary>
     );
     // React compiles to below code internally
     //return React.createElement('div', {className: 'App'}, React.createElement('h1',null,'Some text here'));
   }
 }
 
-export default App;
+export default withClass(App, classes.App);

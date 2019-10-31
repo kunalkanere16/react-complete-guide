@@ -1,5 +1,6 @@
 import React, { PureComponent} from 'react'
 import Person from './Person/Person'
+//import withClass from '../../hoc/withClass';
 
 class Persons extends PureComponent{
     // static getDerivedStateFromProps(props, state){
