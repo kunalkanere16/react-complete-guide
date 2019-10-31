@@ -18,7 +18,8 @@ class App extends Component {
       {id:'3dr5f', name : 'Mayur', age : 32}
     ],
     profession: 'something',
-    showPersons: false
+    showPersons: false,
+    showCockpit: true
   }
 
   static getDerivedStateFromProps(props, state){
@@ -26,8 +27,23 @@ class App extends Component {
     return state;
   }
 
+  //will be removed in future
+  // componentWillMount(){
+  //   console.log('[App.js] componentWillMount');
+  // }
+
   componentDidMount(){
     console.log('[App.js] componentDidMount');
+  }
+
+  //important
+  shouldComponentUpdate(nextProps, nextState){
+    console.log('[App.js] shouldComponentUpdate');
+    return true;
+  }
+
+  componentDidUpdate(){
+    console.log('[App.js] componentDidUpdate')
   }
 
   nameChangedHandler = (event, id) => {
@@ -78,12 +94,17 @@ class App extends Component {
     return (
       //cannot use class as it is reserved word in JS
       // all below tags are JSX which are compiled into HTML
-        <div className={classes.App}> 
-          <Cockpit
+        <div className={classes.App}>
+          <button onClick={()=>{this.setState({showCockpit:false})}}>
+            Remove Cockpit
+          </button>
+          {this.state.showCockpit?
+            <Cockpit
             title={this.props.appTitle} 
             showPersons={this.state.showPersons}
-            persons={this.state.persons}
+            personsLength={this.state.persons.length}
             clicked={this.togglePersons}/>
+            :null}
           {persons}
         </div>
     );
